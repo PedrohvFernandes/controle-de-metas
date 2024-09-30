@@ -1,0 +1,16 @@
+# Depois que colocar essa config de um docker compose up -d no terminal onde tem o arquivo docker-compose.yml para subir o container do postgres(Se estiver usando o windows e você desativou o serviço do docker, abra o app novamente para ligar, se não fizer isso vai dar o erro: error during connect: this error may indicate that the docker daemon is not running)
+name: pocket-js-server
+
+# Containers
+services:
+  pg:
+  # É legal fixarmos a versão, para evitar problemas de compatibilidade
+    image: bitnami/postgresql:13.16.0
+    ports:
+    # Um redirecionamento de portas é feito para que possamos acessar o banco de dados. Eu pego a porta do container, ou seja, do PG e redireciono para a porta do host, ou seja, da máquina que estou utilizando. Isso me permite acessar o banco de dados de fora do container.
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      # Nome do BD
+      - POSTGRES_DB=inorbit

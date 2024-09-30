@@ -1,0 +1,5 @@
+// Para pegar esse arquivo, que é o arquivo config de cada projeto, basta dar um ctrl+shift+p e digitar  preferences: abrir configurações do workspace(Json). Ao abrir o arquivo, basta colar o código abaixo. Aqui estamos indo usar o biomejs como formatador padrão do vscode, em vez do eslint. Depois de um npm i -D @biomejs/biome, coloque o codigo abaixo, crie o arquivo biome.json(use o codigo que esta nesse arquivo peguei do Diego da rocketseat) e por fim instale a extensão dele no vscode: Nome: Biome, ID: biomejs.biome
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome"
+}

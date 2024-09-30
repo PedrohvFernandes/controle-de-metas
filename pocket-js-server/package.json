@@ -1,0 +1,32 @@
+{
+  "name": "controle-de-metas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch --env-file .env src/http/server.ts",
+    "seed": "tsx --env-file .env src/db/seed.ts",
+    "bd:studio": "npx drizzle-kit studio",
+    "bd:generate": "npx drizzle-kit generate",
+    "bd:migrate": "npx drizzle-kit migrate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "drizzle-kit": "^0.24.2",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
+    "controle-de-metas": "file:",
+    "dayjs": "^1.11.13",
+    "drizzle-orm": "^0.33.0",
+    "fastify": "^5.0.0",
+    "fastify-type-provider-zod": "^3.0.0",
+    "postgres": "^3.4.4",
+    "zod": "^3.23.8"
+  }
+}
