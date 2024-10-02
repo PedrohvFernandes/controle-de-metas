@@ -1,11 +1,7 @@
-import dayjs from 'dayjs'
-import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { db } from '../db'
 import { goalCompletions, goals } from '../db/schema'
 import { and, count, eq, gte, lte, sql } from 'drizzle-orm'
 import { firstLastDayWeek } from '../utils/first-and-last-day-week'
-
-dayjs.extend(weekOfYear)
 
 // Ela sempre retorna a semana atual
 export async function getWeekPendingGoals() {
@@ -56,7 +52,7 @@ export async function getWeekPendingGoals() {
           lte(goalCompletions.completedAt, lastDayOfWeek)
         )
       )
-      // Agrupamos por goalId, ou seja, agrupamos por meta. Se eu tenho 3 registros com o mesmo goalId, ele vai agrupar esses 3 registros em um só
+      // Agrupamos por goalId, ou seja, agrupamos por meta. Se eu tenho 3 registros com o mesmo goalId, ele vai agrupar esses 3 registros em um só. Eu uso groupBy quando eu realizo um count, sum, avg, etc. Sempre que eu faço uma agregação, eu preciso agrupar por algo, por um campo
       .groupBy(goalCompletions.goalId)
   )
 
@@ -69,7 +65,7 @@ export async function getWeekPendingGoals() {
       desiredWeeklyFrequency: goalsCreatedUpToWeek.desiredWeeklyFrequency,
       // Se eu não tiver completado nenhuma meta, eu quero que retorne 0, ou seja, ela não foi completada nenhuma vez. Caso essa variavel não exista, eu quero que retorne 0, um valor default, ou seja Caso não exista um id de alguma meta da tabela goals na tabela goalsCompletions, eu quero exibir 0 em vez de null nessa query
       // COALESCE(goals_completion_counts.completionCount, 0)
-      completionCount: sql/*sql*/`
+      completionCount: sql /*sql*/`
         COALESCE(${goalsCompletionCounts.completionCount}, 0)
       `.mapWith(Number), // mapWith(Number) é para converter o valor para Number, porque o retorno do sql é uma string
     })

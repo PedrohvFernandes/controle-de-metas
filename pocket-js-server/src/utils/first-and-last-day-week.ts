@@ -1,4 +1,7 @@
 import dayjs from 'dayjs'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+
+dayjs.extend(weekOfYear)
 
 export const firstLastDayWeek = () => {
   // Ele pega o primeiro dia da semana atual
