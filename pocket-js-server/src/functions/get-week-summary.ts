@@ -1,4 +1,4 @@
-import { and, eq, gte, lte, sql } from 'drizzle-orm'
+import { and, desc, eq, gte, lte, sql } from 'drizzle-orm'
 import { db } from '../db'
 import { goalCompletions, goals } from '../db/schema'
 import { firstLastDayWeek } from '../utils/first-and-last-day-week'
@@ -41,6 +41,7 @@ export async function getWeekSummary() {
           lte(goalCompletions.completedAt, lastDayOfWeek)
         )
       )
+      .orderBy(desc(goalCompletions.completedAt))
   )
 
   // Essa common table expression é para pegar os dados da cte  goalsCompletedInWeek e vai agrupar os dados pela data. Porque é o que precisamos, dos dados agrupados por data: 05/09/2024, 06/09/2024, etc. Um resumo por dia.
@@ -117,7 +118,18 @@ export async function getWeekSummary() {
       .from(goalsCompletedInWeek)
       // Agrupamos os dados pela data
       .groupBy(goalsCompletedInWeek.completedAtDate)
+      // Se quiser de forma decrescente, é só colocar desc, se não quiser so tirar o desc
+      .orderBy(desc(goalsCompletedInWeek.completedAtDate))
   )
+
+  type GoalsPerDay = Record<
+    string,
+    {
+      id: number
+      title: string
+      completedAt: string
+    }[]
+  >
 
   const result = await db
     .with(goalsCreatedUpToWeek, goalsCompletedInWeek, goalsCompletedByWeekDay)
@@ -169,7 +181,7 @@ export async function getWeekSummary() {
 
           E claro mais em cima vem o completed, total...
       */
-      goalsPerDay: sql /*sql*/`
+      goalsPerDay: sql /*sql*/<GoalsPerDay>`
         JSON_OBJECT_AGG(
           ${goalsCompletedByWeekDay.completedAtDate},
           ${goalsCompletedByWeekDay.completions}
@@ -179,6 +191,6 @@ export async function getWeekSummary() {
     .from(goalsCompletedByWeekDay)
 
   return {
-    summary: result,
+    summary: result[0],
   }
 }

@@ -77,3 +77,5 @@ ou
     .select()
     .from(goalsCreatedUpToWeek)
 ```
+
+Se você der um `ctrl+shift+p` e digitar `Unused imports` e der enter, ele vai remover os imports não utilizados. Se usar o Eslint da para configurar para ele remover isso automaticamente, dando um `ctrl+s`.
